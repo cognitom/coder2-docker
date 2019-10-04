@@ -13,6 +13,7 @@ To build and start Coder, run `bash up`. (If you have not got a SSL certificate 
 ```bash
 $ git clone https://github.com/cognitom/coder2-docker.git
 $ cd coder2-docker
+...you might need some steps in the following sections...
 $ bash up
 ```
 
