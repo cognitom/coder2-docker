@@ -1,8 +1,24 @@
 #/bin/bash
 
-# Preferences dir/file
-mkdir -p "$HOME/.local/share/code-server"
-touch "$HOME/.gitconfig"
+if [ -z "$CODER_HOST" ]; then
+  echo 'Set your host name to $CODER_HOST: eg. example.com' 1>&2
+  exit 1
+fi
+if [ -z "$CODER_PASS" ]; then
+  echo 'Set your password to $CODER_PASS' 1>&2
+  exit 1
+fi
+if [ ! -e "$HOME/.lego/certificates/$CODER_HOST.crt" ]; then
+  echo 'Get your certificate. Check README out' 1>&2
+  exit 1
+fi
+
+# Dirs and files
+mkdir -p "$HOME/projects"                 # Root dir shared with Coder
+mkdir -p "$HOME/.local/share/code-server" # Coder's config dir
+mkdir -p "$HOME/.lego"                    # SSL certificates
+mkdir -p "$HOME/.ssh"                     # SSH keys, config and known_hosts
+touch "$HOME/.gitconfig"                  # Git configs
 
 # Stop and delete the container if exists
 docker stop coder2 > /dev/null 2>&1
@@ -14,17 +30,18 @@ docker run \
   --name coder2 \
   --detach \
   --restart unless-stopped \
-  --publish 8443:8080 \
+  --publish ${CODER_PORT:=8080}:8080 \
   --user $(id -u):$(id -g) \
   --env PASSWORD="$CODER_PASS" \
   --env SSH_AUTH_SOCK=/ssh-agent \
-  --mount type=bind,source=$SSH_AUTH_SOCK,target=/ssh-agent \
-  --mount type=bind,source="$HOME/.local/share/code-server",target="/home/coder/.local/share/code-server" \
-  --mount type=bind,source="$HOME/.gitconfig",target="/home/coder/.gitconfig" \
-  --mount type=bind,source="$HOME/.ssh",target="/home/coder/.ssh" \
+  --mount type=bind,source="$SSH_AUTH_SOCK",target="/ssh-agent" \
   --mount type=bind,source="$HOME/projects",target="/home/coder/project" \
+  --mount type=bind,source="$HOME/.local/share/code-server",target="/home/coder/.local/share/code-server" \
   --mount type=bind,source="$HOME/.lego",target="/.lego" \
+  --mount type=bind,source="$HOME/.ssh",target="/home/coder/.ssh" \
+  --mount type=bind,source="$HOME/.gitconfig",target="/home/coder/.gitconfig" \
   coder2 \
+    --auth=password \
     --cert="/.lego/certificates/$CODER_HOST.crt" \
     --cert-key="/.lego/certificates/$CODER_HOST.key"
 
