@@ -13,21 +13,28 @@ To build and start Coder, run `bash up`. (If you have not got a SSL certificate 
 ```bash
 $ git clone https://github.com/cognitom/coder2-docker.git
 $ cd coder2-docker
-...you might need some steps in the following sections...
-$ bash up
 ```
-
-## SSL Certificate
 
 Set your own domain name for Coder and your password for authentification:
 
 ```bash
 $ echo "export CODER_HOST='example.com'" >> ~/.bashrc
 $ echo "export CODER_PASS='your-perfect-strong-password'" >> ~/.bashrc
+$ echo "export CODER_PORT=8080" >> ~/.bashrc
 $ source ~/.bashrc
 ```
 
-Ok, then, let's get your certificate from Let's Encrypt. [lego](https://github.com/go-acme/lego) is exactly the tool for that.
+Then, run:
+
+```bash
+$ bash up
+```
+
+Open http://example.com:8080 on your brwoser.
+
+## SSL Certificate
+
+Let's get your certificate from Let's Encrypt. [lego](https://github.com/go-acme/lego) is exactly the tool for that.
 
 You don't even need to install it. Just run `lego` via Docker:
 
@@ -40,6 +47,8 @@ $ docker run -it -v "${HOME}/.lego:/.lego" goacme/lego \
 ```
 
 I chose the manual method (`--dns=manual`) in the example command above, but there're many many options. Check it out here: https://go-acme.github.io/lego/dns/
+
+Ready? Run `bash up` again, and open https://example.com:8080 on your brwoser.
 
 ## Git user and email
 
