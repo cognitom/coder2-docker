@@ -4,7 +4,7 @@
 
 - [fixuid](https://github.com/boxboat/fixuid)
 - Easy SSL setup, kind of
-- SSH agent forwarding (only when it runs from terminal)
+- SSH agent forwarding (only when it runs from terminal, and if the session is still alive)
 - Pass your SSH keys to the container
 - Pass your Git configs to the container
 
