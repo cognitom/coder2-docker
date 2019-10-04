@@ -41,7 +41,7 @@ $ docker run -it -v "${HOME}/.lego:/.lego" goacme/lego \
 
 I chose the manual method (`--dns=manual`) in the example command above, but there're many many options. Check it out here: https://go-acme.github.io/lego/dns/
 
-## Git user
+## Git user and email
 
 Before commiting, you need to tell Git your name and email (if you haven't set them yet):
 
