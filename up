@@ -36,8 +36,6 @@ docker run \
   --publish ${CODER_PORT:=8080}:8080 \
   --user $(id -u):$(id -g) \
   --env PASSWORD="$CODER_PASS" \
-  --env SSH_AUTH_SOCK=/ssh-agent \
-  --mount type=bind,source="$SSH_AUTH_SOCK",target="/ssh-agent" \
   --mount type=bind,source="$HOME/projects",target="/home/coder/project" \
   --mount type=bind,source="$HOME/.local/share/code-server",target="/home/coder/.local/share/code-server" \
   --mount type=bind,source="$HOME/.lego",target="/.lego" \
